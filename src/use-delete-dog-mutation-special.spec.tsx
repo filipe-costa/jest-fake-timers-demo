@@ -1,5 +1,4 @@
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
-import { waitFor, renderHook, act } from "@testing-library/react";
 import {
   DELETE_DOG_MUTATION,
   useDeleteDogMutation,
@@ -7,6 +6,7 @@ import {
 import { ReactNode } from "react";
 import { loadDevMessages } from "@apollo/client/dev";
 import { useMutation } from "@apollo/client";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 loadDevMessages();
 
@@ -14,7 +14,7 @@ beforeAll(() => {
   jest.useFakeTimers();
 });
 
-describe("useDeleteDogMutation() - using renderHook from @testing-library/react", () => {
+describe("useDeleteDogMutation() - using renderHook from @testing-library/react-hooks", () => {
   it("should delete dog - using custom mutation", async () => {
     const deleteDog = {
       deleteDog: { name: "Buck", breed: "Poodle", id: 1, __typename: "Dog" },
@@ -29,7 +29,7 @@ describe("useDeleteDogMutation() - using renderHook from @testing-library/react"
       },
     ];
 
-    const { result } = renderHook(
+    const { result, waitFor } = renderHook(
       () => useDeleteDogMutation({ name: "Buck" }),
       { wrapper: getWrapper({ mocks }) },
     );
@@ -61,7 +61,7 @@ describe("useDeleteDogMutation() - using renderHook from @testing-library/react"
       },
     ];
 
-    const { result } = renderHook(
+    const { result, waitFor } = renderHook(
       () => useMutation(DELETE_DOG_MUTATION, { variables: { name: "Buck" } }),
       { wrapper: getWrapper({ mocks }) },
     );
